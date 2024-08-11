@@ -1,0 +1,17 @@
+name: CI/CD Pipeline
+
+on: [push]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Deploy to Database
+        env:
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        run: mysql -u $DB_USER -p$DB_PASSWORD firstdatabase < schema_changes_git.sql
+
